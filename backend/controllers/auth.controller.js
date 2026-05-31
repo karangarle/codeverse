@@ -1,33 +1,54 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
+import {
+  registerService,
+  loginService,
+} from "../services/auth.service.js";
 
-export const register = async (req, res) => {
+import ApiResponse from "../utils/ApiResponse.js";
+
+export const register = async (
+  req,
+  res,
+  next
+) => {
   try {
-    const { name, email, password } = req.body;
+    const result =
+      await registerService(req.body);
 
-    const userExists = await User.findOne({ email });
-
-    if (userExists) {
-      return res.status(400).json({
-        message: "User already exists",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    res.status(201).json({
-      success: true,
-      user,
-    });
+    return res.status(201).json(
+      new ApiResponse(
+        201,
+        "User registered successfully",
+        result
+      )
+    );
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
+  }
+};
+
+export const login = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { email, password } =
+      req.body;
+
+    const result =
+      await loginService(
+        email,
+        password
+      );
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Login successful",
+        result
+      )
+    );
+  } catch (error) {
+    next(error);
   }
 };
