@@ -12,7 +12,7 @@ const createAdmin = async () => {
     // Default admin credentials (feel free to change these)
     const adminName = "System Admin";
     const adminEmail = "admin@codeverse.com";
-    const adminPassword = "AdminPassword123";
+    const adminPassword = "Admin@123";
 
     const existingAdmin = await User.findOne({ email: adminEmail });
     if (existingAdmin) {
@@ -36,7 +36,7 @@ const createAdmin = async () => {
     console.log(`Email:    ${adminEmail}`);
     console.log(`Password: ${adminPassword}`);
     console.log("=========================================");
-    
+
     process.exit(0);
   } catch (error) {
     console.error("\n[X] Error creating admin user:", error.message);
