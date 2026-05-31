@@ -52,3 +52,28 @@ export const login = async (
     next(error);
   }
 };
+
+export const getCurrentUser =
+  async (req, res, next) => {
+    try {
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          "User fetched successfully",
+          req.user
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+export const logout = async (
+  req,
+  res
+) => {
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
