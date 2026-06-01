@@ -2,7 +2,10 @@ import ApiResponse from "../utils/ApiResponse.js";
 
 import {
   createCourseService,
-  getAllCoursesService
+  deleteCourseService,
+  getAllCoursesService,
+  getCourseBySlugService,
+  updateCourseService
 } from "../services/course.service.js";
 
 export const createCourse =
@@ -46,6 +49,80 @@ export const getAllCourses =
           courses
         )
       );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const getCourse =
+  async (req, res, next) => {
+    try {
+      const course =
+        await getCourseBySlugService(
+          req.params.slug
+        );
+
+      if (!course) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Course not found",
+        });
+      }
+
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          "Course fetched successfully",
+          course
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const updateCourse =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+      const course =
+        await updateCourseService(
+          req.params.id,
+          req.body
+        );
+
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          "Course updated successfully",
+          course
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const deleteCourse =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+      await deleteCourseService(
+        req.params.id
+      );
+
+      return res.status(200).json({
+        success: true,
+        message:
+          "Course deleted successfully",
+      });
     } catch (error) {
       next(error);
     }
