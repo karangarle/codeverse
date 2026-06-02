@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 
 import authRoutes from "./routes/auth.routes.js";
 import courseRoutes from "./routes/course.routes.js";
+import courseTopicRoutes from "./routes/courseTopic.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -48,6 +49,11 @@ app.use("/api/v1/auth", authRoutes);
 app.use(
   "/api/v1/courses",
   courseRoutes
+);
+
+app.use(
+  "/api/v1/course-topics",
+  courseTopicRoutes
 );
 
 // Global Error Handler (must be last)

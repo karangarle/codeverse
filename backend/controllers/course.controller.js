@@ -37,8 +37,8 @@ export const createCourse =
 export const getAllCourses =
   async (req, res, next) => {
     try {
-        console.log("inside Code");
-        
+      console.log("inside Code");
+
       const courses =
         await getAllCoursesService();
 
@@ -54,7 +54,7 @@ export const getAllCourses =
     }
   };
 
-  export const getCourse =
+export const getCourse =
   async (req, res, next) => {
     try {
       const course =
@@ -82,7 +82,7 @@ export const getAllCourses =
     }
   };
 
-  export const updateCourse =
+export const updateCourse =
   async (
     req,
     res,
@@ -107,7 +107,7 @@ export const getAllCourses =
     }
   };
 
-  export const deleteCourse =
+export const deleteCourse =
   async (
     req,
     res,
