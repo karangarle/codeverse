@@ -1,50 +1,43 @@
 import mongoose from "mongoose";
 
-const progressSchema =
-  new mongoose.Schema(
-    {
-      user: {
-        type:
-          mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-
-      course: {
-        type:
-          mongoose.Schema.Types.ObjectId,
-        ref: "Course",
-        required: true,
-      },
-
-      completedTopics: [
-        {
-          type:
-            mongoose.Schema.Types.ObjectId,
-          ref: "CourseTopic",
-        },
-      ],
-
-      lastTopic: {
-        type:
-          mongoose.Schema.Types.ObjectId,
-        ref: "CourseTopic",
-      },
-
-      progressPercentage: {
-        type: Number,
-        default: 0,
-      },
+const progressSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    {
-      timestamps: true,
-    }
-  );
+
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+
+    topic: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CourseTopic",
+      required: true,
+    },
+
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    completedAt: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 progressSchema.index(
   {
     user: 1,
-    course: 1,
+    topic: 1,
   },
   {
     unique: true,

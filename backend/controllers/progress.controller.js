@@ -1,36 +1,37 @@
 import ApiResponse from "../utils/ApiResponse.js";
+import { markTopicCompleteService } from "../services/progress.service.js";
 
-import {
-  markTopicCompletedService,
-} from "../services/progress.service.js";
+export const markTopicComplete = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { courseId, topicId } = req.body;
 
-export const markTopicCompleted =
-  async (
-    req,
-    res,
-    next
-  ) => {
-    try {
-      const {
-        courseId,
-        topicId,
-      } = req.body;
-
-      const result =
-        await markTopicCompletedService(
-          req.user._id,
-          courseId,
-          topicId
-        );
-
-      return res.status(200).json(
+    if (!courseId || !topicId) {
+      return res.status(400).json(
         new ApiResponse(
-          200,
-          "Topic completed successfully",
-          result
+          400,
+          "courseId and topicId are required"
         )
       );
-    } catch (error) {
-      next(error);
     }
-  };
+
+    const result = await markTopicCompleteService(
+      req.user._id,
+      courseId,
+      topicId
+    );
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Topic completed successfully",
+        result
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
