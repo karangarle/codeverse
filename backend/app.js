@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import courseRoutes from "./routes/course.routes.js";
 import courseTopicRoutes from "./routes/courseTopic.routes.js";
 import progressRoutes from "./routes/progress.route.js";
+import moduleRoutes from "./routes/module.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -58,6 +59,8 @@ app.use(
 );
 
 app.use("/api/v1/progress", progressRoutes);
+
+app.use("/api/v1/modules", moduleRoutes);
 
 // Global Error Handler (must be last)
 app.use(errorHandler);

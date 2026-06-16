@@ -11,9 +11,9 @@ export const createCourseService =
     return createCourse(payload);
   };
 
-  export const getAllCoursesService =
-  async () => {
-    return getAllCourses();
+export const getAllCoursesService =
+  async (filter = {}) => {
+    return getAllCourses(filter);
   };
 
   export const getCourseBySlugService =

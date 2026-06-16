@@ -1,84 +1,62 @@
 import Progress from "../models/Progress.js";
-
 import CourseTopic from "../models/CourseTopic.js";
 
-import {
-  findProgress,
-  createProgress,
-  updateProgress,
-} from "../repositories/progress.repository.js";
+/**
+ * Get progress details for a course
+ */
+export const getCourseProgressService = async (userId, courseId) => {
+  const totalTopics = await CourseTopic.countDocuments({
+    course: courseId,
+    isPublished: true,
+  });
 
-// export const markTopicCompleteService =
-//   async (
-//     userId,
-//     courseId,
-//     topicId
-//   ) => {
-//     let progress =
-//       await findProgress(
-//         userId,
-//         courseId
-//       );
+  const completedProgress = await Progress.find({
+    user: userId,
+    course: courseId,
+    isCompleted: true,
+  }).select("topic");
 
-//     const totalTopics =
-//       await CourseTopic.countDocuments(
-//         {
-//           course: courseId,
-//         }
-//       );
+  const completedTopicIds = completedProgress.map((p) => p.topic.toString());
 
-//     if (!progress) {
-//       progress =
-//         await Progress.create({
-//   user: userId,
-//   course: courseId,
-//   topicId: topicId, // This field does not exist in the schema
-// });
-//     } else {
-//       const alreadyCompleted =
-//         progress.completedTopics.some(
-//           (id) =>
-//             id.toString() ===
-//             topicId
-//         );
+  const progressPercentage =
+    totalTopics > 0 ? Math.round((completedTopicIds.length / totalTopics) * 100) : 0;
 
-//       if (!alreadyCompleted) {
-//         progress.completedTopics.push(
-//           topicId
-//         );
-//       }
+  return {
+    completedTopicIds,
+    progressPercentage,
+    totalTopics,
+  };
+};
 
-//       progress.lastTopic =
-//         topicId;
-
-//       progress.progressPercentage =
-//         Math.round(
-//           (progress
-//             .completedTopics
-//             .length /
-//             totalTopics) *
-//             100
-//         );
-
-//       await progress.save();
-//     }
-
-//     return progress;
-//   };
-  
-export const markTopicCompleteService = async (
-  userId,
-  courseId,
-  topicId
-) => {
-
-  const progress = await Progress.create({
+/**
+ * Toggle topic completion status
+ */
+export const toggleTopicCompletionService = async (userId, courseId, topicId) => {
+  const existingProgress = await Progress.findOne({
     user: userId,
     course: courseId,
     topic: topicId,
-    isCompleted: true,
-    completedAt: new Date(),
   });
 
-  return progress;
+  if (existingProgress) {
+    await Progress.deleteOne({ _id: existingProgress._id });
+    const stats = await getCourseProgressService(userId, courseId);
+    return {
+      isCompleted: false,
+      ...stats,
+    };
+  } else {
+    await Progress.create({
+      user: userId,
+      course: courseId,
+      topic: topicId,
+      isCompleted: true,
+      completedAt: new Date(),
+    });
+    const stats = await getCourseProgressService(userId, courseId);
+    return {
+      isCompleted: true,
+      ...stats,
+    };
+  }
 };

@@ -4,11 +4,11 @@ export const createCourseTopic = async (payload) => {
   return CourseTopic.create(payload);
 };
 
-export const getAllCourseTopics = async () => {
-  return CourseTopic.find()
+export const getAllCourseTopics = async (filter = {}) => {
+  return CourseTopic.find(filter)
     .populate("course", "title slug")
     .populate("createdBy", "name email")
-    .sort({ createdAt: -1 });
+    .sort({ order: 1, createdAt: -1 });
 };
 
 export const getCourseTopicBySlug = async (slug) => {

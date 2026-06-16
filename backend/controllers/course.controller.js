@@ -37,15 +37,33 @@ export const createCourse =
 export const getAllCourses =
   async (req, res, next) => {
     try {
-      console.log("inside Code");
+      const courses =
+        await getAllCoursesService({
+          isPublished: true,
+        });
 
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          "Courses fetched successfully",
+          courses
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+export const getAdminCourses =
+  async (req, res, next) => {
+    try {
       const courses =
         await getAllCoursesService();
 
       return res.status(200).json(
         new ApiResponse(
           200,
-          "Courses fetched successfully",
+          "Admin courses fetched successfully",
           courses
         )
       );

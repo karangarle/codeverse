@@ -34,11 +34,29 @@ export const createCourseTopic =
 export const getAllCourseTopics =
     async (req, res, next) => {
         try {
-            const courseTopics = await getAllCourseTopicsService();
+            const courseTopics = await getAllCourseTopicsService({
+                isPublished: true,
+            });
             return res.status(200).json(
                 new ApiResponse(
                     200,
                     "Course topics retrieved successfully",
+                    courseTopics
+                )
+            );
+        } catch (error) {
+            next(error);
+        }
+    };
+
+export const getAdminCourseTopics =
+    async (req, res, next) => {
+        try {
+            const courseTopics = await getAllCourseTopicsService();
+            return res.status(200).json(
+                new ApiResponse(
+                    200,
+                    "Admin course topics retrieved successfully",
                     courseTopics
                 )
             );

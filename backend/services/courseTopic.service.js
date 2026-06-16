@@ -4,8 +4,8 @@ export const createCourseTopicService = async (payload) => {
     return createCourseTopic(payload);
 };
 
-export const getAllCourseTopicsService = async () => {
-    return getAllCourseTopics();
+export const getAllCourseTopicsService = async (filter = {}) => {
+    return getAllCourseTopics(filter);
 };
 
 export const getCourseTopicByIdService = async (id) => {
