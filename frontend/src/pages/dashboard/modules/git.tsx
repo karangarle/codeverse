@@ -11,7 +11,11 @@ interface GitCommand {
   example?: string;
 }
 
-export default function GitModule() {
+interface GitModuleProps {
+  initialSearch?: string;
+}
+
+export default function GitModule({ initialSearch }: GitModuleProps) {
   const [commands, setCommands] = useState<GitCommand[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,6 +36,13 @@ export default function GitModule() {
     };
     fetchCommands();
   }, []);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+      setActiveCategory("All");
+    }
+  }, [initialSearch]);
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);

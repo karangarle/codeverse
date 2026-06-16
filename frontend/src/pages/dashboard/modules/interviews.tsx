@@ -11,7 +11,11 @@ interface InterviewQuestion {
   category: string;
 }
 
-export default function InterviewsModule() {
+interface InterviewsModuleProps {
+  initialSearch?: string;
+}
+
+export default function InterviewsModule({ initialSearch }: InterviewsModuleProps) {
   const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
@@ -32,6 +36,13 @@ export default function InterviewsModule() {
     };
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+      setActiveCategory("All");
+    }
+  }, [initialSearch]);
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);

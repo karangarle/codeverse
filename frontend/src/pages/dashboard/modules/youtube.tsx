@@ -11,7 +11,15 @@ interface VideoData {
   order: number;
 }
 
-export default function YoutubeModule() {
+interface YoutubeModuleProps {
+  activeVideoId?: string;
+  initialSearch?: string;
+}
+
+export default function YoutubeModule({
+  activeVideoId,
+  initialSearch,
+}: YoutubeModuleProps) {
   const [videos, setVideos] = useState<VideoData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeVideo, setActiveVideo] = useState<VideoData | null>(null);
@@ -35,6 +43,21 @@ export default function YoutubeModule() {
     };
     fetchVideos();
   }, []);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+    }
+  }, [initialSearch]);
+
+  useEffect(() => {
+    if (!activeVideoId || videos.length === 0) return;
+
+    const video = videos.find((item) => item._id === activeVideoId);
+    if (video) {
+      setActiveVideo(video);
+    }
+  }, [activeVideoId, videos]);
 
   const filteredVideos = videos.filter(
     (v) =>

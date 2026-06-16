@@ -31,7 +31,16 @@ interface ProgressData {
   totalTopics: number;
 }
 
-export default function CoursesModule() {
+interface SearchTarget {
+  id: string;
+  kind: string;
+}
+
+interface CoursesModuleProps {
+  searchTarget?: SearchTarget | null;
+}
+
+export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -58,6 +67,31 @@ export default function CoursesModule() {
     };
     init();
   }, []);
+
+  useEffect(() => {
+    if (!searchTarget || loading) return;
+
+    if (searchTarget.kind === "course") {
+      const course = courses.find((item) => item._id === searchTarget.id);
+      if (course) {
+        setSelectedCourse(course);
+        setSelectedTopic(null);
+      }
+      return;
+    }
+
+    if (searchTarget.kind === "topic") {
+      const topic = topics.find((item) => item._id === searchTarget.id);
+      const course = topic
+        ? courses.find((item) => item._id === topic.course?._id)
+        : null;
+
+      if (topic && course) {
+        setSelectedCourse(course);
+        setSelectedTopic(topic);
+      }
+    }
+  }, [courses, loading, searchTarget, topics]);
 
   // Fetch progress when course changes
   useEffect(() => {

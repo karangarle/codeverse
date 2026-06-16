@@ -11,7 +11,11 @@ interface PdfResource {
   category: string;
 }
 
-export default function PdfsModule() {
+interface PdfsModuleProps {
+  initialSearch?: string;
+}
+
+export default function PdfsModule({ initialSearch }: PdfsModuleProps) {
   const [pdfs, setPdfs] = useState<PdfResource[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -30,6 +34,12 @@ export default function PdfsModule() {
     };
     fetchPdfs();
   }, []);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+    }
+  }, [initialSearch]);
 
   const filteredPdfs = pdfs.filter(
     (pdf) =>

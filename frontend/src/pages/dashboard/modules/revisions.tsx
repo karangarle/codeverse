@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "@/shared/api/api";
-import { BookOpen, Sparkles, AlertCircle } from "lucide-react";
+import { BookOpen, Sparkles, AlertCircle, Search } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface Revision {
@@ -11,9 +11,14 @@ interface Revision {
   keyPoints: string[];
 }
 
-export default function RevisionsModule() {
+interface RevisionsModuleProps {
+  initialSearch?: string;
+}
+
+export default function RevisionsModule({ initialSearch }: RevisionsModuleProps) {
   const [revisions, setRevisions] = useState<Revision[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,12 +36,29 @@ export default function RevisionsModule() {
     fetchRevisions();
   }, []);
 
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+      setActiveCategory("All");
+    }
+  }, [initialSearch]);
+
   const categories = ["All", ...new Set(revisions.map((r) => r.category))];
 
   const filteredRevisions =
     activeCategory === "All"
       ? revisions
       : revisions.filter((r) => r.category === activeCategory);
+
+  const visibleRevisions = filteredRevisions.filter((revision) => {
+    const query = searchTerm.trim().toLowerCase();
+
+    if (!query) return true;
+
+    return `${revision.title} ${revision.category} ${revision.content}`
+      .toLowerCase()
+      .includes(query);
+  });
 
   if (loading) {
     return (
@@ -57,6 +79,17 @@ export default function RevisionsModule() {
           <p className="text-zinc-400 mt-2 text-sm">
             High-yield, atomic notes to quickly review important coding concepts.
           </p>
+        </div>
+
+        <div className="relative w-full md:w-80">
+          <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <input
+            type="text"
+            placeholder="Search revision cards..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="w-full rounded-xl border border-zinc-800 bg-[#18181b]/40 py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-indigo-500/60"
+          />
         </div>
       </div>
 
@@ -79,7 +112,7 @@ export default function RevisionsModule() {
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredRevisions.map((rev) => (
+        {visibleRevisions.map((rev) => (
           <div
             key={rev._id}
             className="bg-[#18181b]/35 border border-zinc-800/80 hover:border-indigo-500/40 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between hover:shadow-[0_0_30px_rgba(99,102,241,0.05)] group relative overflow-hidden"
@@ -122,7 +155,7 @@ export default function RevisionsModule() {
           </div>
         ))}
 
-        {filteredRevisions.length === 0 && (
+        {visibleRevisions.length === 0 && (
           <div className="col-span-full py-16 text-center text-zinc-500 border border-dashed border-zinc-800 rounded-2xl flex flex-col items-center justify-center">
             <AlertCircle size={40} className="text-zinc-700 mb-3" />
             <h3 className="font-semibold text-zinc-400">No Revision Cards</h3>

@@ -7,8 +7,8 @@ export const createCourse = async (
 };
 
 export const getAllCourses =
-  async () => {
-    return Course.find()
+  async (filter = {}) => {
+    return Course.find(filter)
       .populate(
         "createdBy",
         "name email"
@@ -22,6 +22,7 @@ export const getCourseBySlug =
   async (slug) => {
     return Course.findOne({
       slug,
+      isPublished: true,
     }).populate(
       "createdBy",
       "name email"

@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/shared/store/auth.store";
+import { api } from "@/shared/api/api";
 import toast from "react-hot-toast";
 import {
   LogOut,
@@ -15,20 +16,21 @@ import {
   Award,
   TrendingUp,
   Menu,
+  Search,
   X
 } from "lucide-react";
 
 // Module views
-import CoursesModule from "./modules/courses";
-import RevisionsModule from "./modules/revisions";
-import InterviewsModule from "./modules/interviews";
-import GitModule from "./modules/git";
-import MernSetupModule from "./modules/mern-setup";
-import DeploymentModule from "./modules/deployment";
-import PdfsModule from "./modules/pdfs";
-import YoutubeModule from "./modules/youtube";
-import ResumeModule from "./modules/resume";
-import AdminModule from "./modules/admin";
+const CoursesModule = lazy(() => import("./modules/courses"));
+const RevisionsModule = lazy(() => import("./modules/revisions"));
+const InterviewsModule = lazy(() => import("./modules/interviews"));
+const GitModule = lazy(() => import("./modules/git"));
+const MernSetupModule = lazy(() => import("./modules/mern-setup"));
+const DeploymentModule = lazy(() => import("./modules/deployment"));
+const PdfsModule = lazy(() => import("./modules/pdfs"));
+const YoutubeModule = lazy(() => import("./modules/youtube"));
+const ResumeModule = lazy(() => import("./modules/resume"));
+const AdminModule = lazy(() => import("./modules/admin"));
 
 type Tab =
   | "courses"
@@ -42,11 +44,27 @@ type Tab =
   | "resume"
   | "admin";
 
+interface SearchItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  tab: Tab;
+  kind: string;
+}
+
+const getText = (value: unknown) => {
+  return typeof value === "string" ? value : "";
+};
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { logout, user, token } = useAuthStore();
   const [activeTab, setActiveTab] = useState<Tab>("courses");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [quickSearch, setQuickSearch] = useState("");
+  const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
+  const [selectedSearchItem, setSelectedSearchItem] =
+    useState<SearchItem | null>(null);
 
   // Guard: if not authenticated, redirect to login
   useEffect(() => {
@@ -54,6 +72,115 @@ export default function DashboardPage() {
       navigate("/login");
     }
   }, [token, navigate]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const loadSearchIndex = async () => {
+      try {
+        const [
+          coursesResponse,
+          topicsResponse,
+          revisionsResponse,
+          interviewsResponse,
+          gitResponse,
+          pdfsResponse,
+          videosResponse,
+        ] = await Promise.all([
+          api.get("/courses"),
+          api.get("/course-topics"),
+          api.get("/modules/revisions"),
+          api.get("/modules/interviews"),
+          api.get("/modules/git-commands"),
+          api.get("/modules/pdfs"),
+          api.get("/modules/videos"),
+        ]);
+
+        const courses = coursesResponse.data.data || [];
+        const topics = topicsResponse.data.data || [];
+        const revisions = revisionsResponse.data.data || [];
+        const interviews = interviewsResponse.data.data || [];
+        const gitCommands = gitResponse.data.data || [];
+        const pdfs = pdfsResponse.data.data || [];
+        const videos = videosResponse.data.data || [];
+
+        setSearchItems([
+          ...courses.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.title),
+            subtitle: "Course",
+            tab: "courses" as Tab,
+            kind: "course",
+          })),
+          ...topics.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.title),
+            subtitle: "Course topic",
+            tab: "courses" as Tab,
+            kind: "topic",
+          })),
+          ...revisions.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.title),
+            subtitle: `Revision - ${getText(item.category)}`,
+            tab: "revisions" as Tab,
+            kind: "revision",
+          })),
+          ...interviews.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.question),
+            subtitle: `Interview - ${getText(item.category)}`,
+            tab: "interviews" as Tab,
+            kind: "interview",
+          })),
+          ...gitCommands.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.command),
+            subtitle: `Git - ${getText(item.category)}`,
+            tab: "git" as Tab,
+            kind: "git-command",
+          })),
+          ...pdfs.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.title),
+            subtitle: `PDF - ${getText(item.category)}`,
+            tab: "pdfs" as Tab,
+            kind: "pdf",
+          })),
+          ...videos.map((item: Record<string, unknown>) => ({
+            id: getText(item._id),
+            title: getText(item.title),
+            subtitle: `Video - ${getText(item.playlistName)}`,
+            tab: "youtube" as Tab,
+            kind: "video",
+          })),
+        ]);
+      } catch {
+        setSearchItems([]);
+      }
+    };
+
+    loadSearchIndex();
+  }, [token]);
+
+  const filteredSearchItems = useMemo(() => {
+    const query = quickSearch.trim().toLowerCase();
+
+    if (!query) return [];
+
+    return searchItems
+      .filter((item) =>
+        `${item.title} ${item.subtitle}`.toLowerCase().includes(query)
+      )
+      .slice(0, 8);
+  }, [quickSearch, searchItems]);
+
+  const openSearchItem = (item: SearchItem) => {
+    setActiveTab(item.tab);
+    setSelectedSearchItem(item);
+    setQuickSearch("");
+    setMobileMenuOpen(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -66,12 +193,43 @@ export default function DashboardPage() {
     { id: "revisions", label: "Quick Revisions", icon: Zap },
     { id: "interviews", label: "Interview Q&A", icon: HelpCircle },
     { id: "git", label: "Git Commands", icon: Terminal },
-    { id: "mern-setup", label: "MERN Setup Setup", icon: FileCode2 },
+    { id: "mern-setup", label: "MERN Setup", icon: FileCode2 },
     { id: "deployment", label: "Deployment Guides", icon: Server },
     { id: "pdfs", label: "PDF Downloads", icon: FileText },
     { id: "youtube", label: "YouTube Playlists", icon: Video },
     { id: "resume", label: "Resume Builder", icon: Award },
   ];
+
+  const renderQuickSearchBox = () => (
+    <div className="relative">
+      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+      <input
+        value={quickSearch}
+        onChange={(event) => setQuickSearch(event.target.value)}
+        placeholder="Search references..."
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-950/60 py-2.5 pl-9 pr-3 text-xs text-white outline-none transition focus:border-indigo-500/60"
+      />
+
+      {filteredSearchItems.length > 0 && (
+        <div className="absolute left-0 right-0 top-12 z-50 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl">
+          {filteredSearchItems.map((item) => (
+            <button
+              key={`${item.tab}-${item.id}`}
+              onClick={() => openSearchItem(item)}
+              className="block w-full border-b border-zinc-900 px-3 py-2.5 text-left last:border-b-0 hover:bg-zinc-900"
+            >
+              <span className="block truncate text-xs font-semibold text-white">
+                {item.title}
+              </span>
+              <span className="mt-0.5 block truncate text-[10px] text-zinc-500">
+                {item.subtitle}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   // Admin tab is only visible to admin users
   if (user?.role === "admin") {
@@ -81,27 +239,32 @@ export default function DashboardPage() {
   const renderActiveModule = () => {
     switch (activeTab) {
       case "courses":
-        return <CoursesModule />;
+        return <CoursesModule searchTarget={selectedSearchItem} />;
       case "revisions":
-        return <RevisionsModule />;
+        return <RevisionsModule initialSearch={selectedSearchItem?.title} />;
       case "interviews":
-        return <InterviewsModule />;
+        return <InterviewsModule initialSearch={selectedSearchItem?.title} />;
       case "git":
-        return <GitModule />;
+        return <GitModule initialSearch={selectedSearchItem?.title} />;
       case "mern-setup":
         return <MernSetupModule />;
       case "deployment":
         return <DeploymentModule />;
       case "pdfs":
-        return <PdfsModule />;
+        return <PdfsModule initialSearch={selectedSearchItem?.title} />;
       case "youtube":
-        return <YoutubeModule />;
+        return (
+          <YoutubeModule
+            activeVideoId={selectedSearchItem?.id}
+            initialSearch={selectedSearchItem?.title}
+          />
+        );
       case "resume":
         return <ResumeModule />;
       case "admin":
         return <AdminModule />;
       default:
-        return <CoursesModule />;
+        return <CoursesModule searchTarget={selectedSearchItem} />;
     }
   };
 
@@ -122,6 +285,10 @@ export default function DashboardPage() {
           </span>
         </div>
 
+        <div className="px-4 pt-4">
+          {renderQuickSearchBox()}
+        </div>
+
         {/* Sidebar Nav Links */}
         <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
           {navItems.map((item) => {
@@ -130,7 +297,10 @@ export default function DashboardPage() {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id as Tab)}
+                onClick={() => {
+                  setActiveTab(item.id as Tab);
+                  setSelectedSearchItem(null);
+                }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                   isActive
                     ? "bg-indigo-600 border border-indigo-500 text-white shadow-lg shadow-indigo-600/20"
@@ -172,6 +342,10 @@ export default function DashboardPage() {
             </span>
           </div>
 
+          <div className="mx-4 hidden flex-1 sm:block">
+            {renderQuickSearchBox()}
+          </div>
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-1.5 border border-[#27272a] rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 cursor-pointer"
@@ -182,7 +356,7 @@ export default function DashboardPage() {
 
         {/* Mobile Navigation Drawer overlay */}
         {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-45 bg-[#09090b]/95 flex flex-col p-6 space-y-6">
+          <div className="md:hidden fixed inset-0 z-50 bg-[#09090b]/95 flex flex-col p-6 space-y-6">
             <div className="flex justify-between items-center">
               <span className="font-extrabold text-white text-lg">Menu</span>
               <button
@@ -194,6 +368,10 @@ export default function DashboardPage() {
             </div>
 
             <nav className="flex-1 space-y-2 overflow-y-auto">
+              <div className="mb-4">
+                {renderQuickSearchBox()}
+              </div>
+
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
@@ -202,6 +380,7 @@ export default function DashboardPage() {
                     key={item.id}
                     onClick={() => {
                       setActiveTab(item.id as Tab);
+                      setSelectedSearchItem(null);
                       setMobileMenuOpen(false);
                     }}
                     className={`w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
@@ -235,7 +414,15 @@ export default function DashboardPage() {
 
         {/* Main Dashboard Panel Page Content */}
         <main className="flex-1 overflow-y-auto px-6 py-8 md:p-10 max-w-7xl w-full mx-auto">
-          {renderActiveModule()}
+          <Suspense
+            fallback={
+              <div className="flex min-h-[360px] items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500/30 border-t-indigo-500" />
+              </div>
+            }
+          >
+            {renderActiveModule()}
+          </Suspense>
         </main>
       </div>
     </div>

@@ -72,7 +72,7 @@ export default function DeploymentModule() {
                 <div>
                   <h4 className="font-bold text-white">Configure Start Script</h4>
                   <p className="text-zinc-400 mt-1">Ensure your <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">package.json</code> includes a start script pointing node to the server startup entrypoint.</p>
-                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-850 font-mono mt-2 overflow-x-auto">
+                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-800 font-mono mt-2 overflow-x-auto">
 {`"scripts": {
   "start": "node server.js"
 }`}
@@ -84,8 +84,8 @@ export default function DeploymentModule() {
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-400 text-xs border border-indigo-500/25 flex-shrink-0 font-bold mt-0.5">2</span>
                 <div>
                   <h4 className="font-bold text-white">Create a Web Service on Render</h4>
-                  <p className="text-zinc-400 mt-1">Connect your Git repository, choose **Web Service**, specify the Environment as **Node**, and configure the installation and build fields.</p>
-                  <div className="bg-black/30 border border-zinc-850 p-4 rounded-xl space-y-2 mt-2 font-mono text-xs">
+                  <p className="text-zinc-400 mt-1">Connect your Git repository, choose <strong className="text-zinc-300">Web Service</strong>, specify the environment as <strong className="text-zinc-300">Node</strong>, and configure the installation and build fields.</p>
+                  <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl space-y-2 mt-2 font-mono text-xs">
                     <div><span className="text-zinc-500">Build Command:</span> <span className="text-emerald-400">npm install</span></div>
                     <div><span className="text-zinc-500">Start Command:</span> <span className="text-emerald-400">npm start</span></div>
                   </div>
@@ -96,7 +96,7 @@ export default function DeploymentModule() {
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-400 text-xs border border-indigo-500/25 flex-shrink-0 font-bold mt-0.5">3</span>
                 <div>
                   <h4 className="font-bold text-white">Environment variables</h4>
-                  <p className="text-zinc-400 mt-1">Add your environment secrets under Render's **Environment** tab: <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">MONGODB_URI</code>, <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">JWT_SECRET</code>, etc.</p>
+                  <p className="text-zinc-400 mt-1">Add your environment secrets under Render's <strong className="text-zinc-300">Environment</strong> tab: <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">MONGODB_URI</code>, <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">JWT_SECRET</code>, etc.</p>
                 </div>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function DeploymentModule() {
                 <div>
                   <h4 className="font-bold text-white">Vercel router rules setup</h4>
                   <p className="text-zinc-400 mt-1">Create a <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">vercel.json</code> file in the client root to enable React client routes routing fallback.</p>
-                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-850 font-mono mt-2 overflow-x-auto">
+                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-800 font-mono mt-2 overflow-x-auto">
 {`{
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
@@ -132,8 +132,8 @@ export default function DeploymentModule() {
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-400 text-xs border border-indigo-500/25 flex-shrink-0 font-bold mt-0.5">2</span>
                 <div>
                   <h4 className="font-bold text-white">Launch Vercel Project</h4>
-                  <p className="text-zinc-400 mt-1">Import the Git repository inside your Vercel Dashboard, select **Vite** configuration, set root folder and build commands.</p>
-                  <div className="bg-black/30 border border-zinc-850 p-4 rounded-xl space-y-2 mt-2 font-mono text-xs">
+                  <p className="text-zinc-400 mt-1">Import the Git repository inside your Vercel Dashboard, select the <strong className="text-zinc-300">Vite</strong> configuration, then set the root folder and build commands.</p>
+                  <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl space-y-2 mt-2 font-mono text-xs">
                     <div><span className="text-zinc-500">Output Directory:</span> <span className="text-emerald-400">dist</span></div>
                     <div><span className="text-zinc-500">Build Command:</span> <span className="text-emerald-400">npm run build</span></div>
                   </div>
@@ -158,7 +158,7 @@ export default function DeploymentModule() {
                 <div>
                   <h4 className="font-bold text-white">Netlify redirects config</h4>
                   <p className="text-zinc-400 mt-1">Place a file named <code className="text-indigo-300 bg-black/40 px-1.5 py-0.5 rounded">_redirects</code> inside the Vite client's public folder to support React routing fallback.</p>
-                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-850 font-mono mt-2 overflow-x-auto">
+                  <pre className="text-xs text-indigo-200 bg-black/35 p-3 rounded-xl border border-zinc-800 font-mono mt-2 overflow-x-auto">
 {`/*    /index.html   200`}
                   </pre>
                 </div>
@@ -168,7 +168,7 @@ export default function DeploymentModule() {
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-400 text-xs border border-indigo-500/25 flex-shrink-0 font-bold mt-0.5">2</span>
                 <div>
                   <h4 className="font-bold text-white">Import to Netlify</h4>
-                  <p className="text-zinc-400 mt-1">Connect GitHub, choose client directory, and click **Deploy Site** once environment variables are set.</p>
+                  <p className="text-zinc-400 mt-1">Connect GitHub, choose the client directory, and click <strong className="text-zinc-300">Deploy Site</strong> once environment variables are set.</p>
                 </div>
               </div>
             </div>

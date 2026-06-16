@@ -20,7 +20,7 @@ export default function MernSetupModule() {
       id: 1,
       title: "Initialize Backend Repository",
       description: "Create your root project directory, initialize package.json, and install express dependencies.",
-      snippet: "mkdir mern-app && cd mern-app\nnpm init -y\nnpm install express mongoose dotenv cors cors-parser jsonwebtoken bcryptjs\nnpm install --save-dev nodemon",
+      snippet: "mkdir mern-app && cd mern-app\nnpm init -y\nnpm install express mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs\nnpm install --save-dev nodemon",
       details: [
         "Create variables in .env (PORT, MONGODB_URI, JWT_SECRET).",
         "Add start scripts inside package.json config.",
@@ -201,7 +201,7 @@ export const api = axios.create({
                       </pre>
                       <button
                         onClick={() => copySnippet(step.snippet!, idx)}
-                        className="absolute right-3.5 top-3.5 p-1.5 bg-zinc-900/90 border border-zinc-850 hover:border-zinc-700 text-zinc-400 hover:text-white rounded-lg opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                        className="absolute right-3.5 top-3.5 p-1.5 bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white rounded-lg opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
                       >
                         {copiedIndex === idx ? <Check className="text-emerald-400" size={14} /> : <ClipboardList size={14} />}
                       </button>
@@ -210,7 +210,7 @@ export const api = axios.create({
 
                   {step.details && step.details.length > 0 && (
                     <div className="space-y-2">
-                      <span className="text-xs font-bold text-zinc-400 block">Crucial Checklist Checklist:</span>
+                      <span className="text-xs font-bold text-zinc-400 block">Crucial Checklist:</span>
                       <ul className="space-y-1.5">
                         {step.details.map((detail, dIdx) => (
                           <li key={dIdx} className="text-xs text-zinc-400 flex items-start gap-2">

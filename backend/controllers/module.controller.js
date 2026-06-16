@@ -70,7 +70,7 @@ export const getAdminAnalytics = async (req, res, next) => {
     const totalCompletions = await Progress.countDocuments({ isCompleted: true });
 
     // Calculate completions per course
-    const completionsByCourse = await Progress.aggregate([
+const completionsByCourse = await Progress.aggregate([
       { $match: { isCompleted: true } },
       { $group: { _id: "$course", count: { $sum: 1 } } },
       { $lookup: { from: "courses", localField: "_id", foreignField: "_id", as: "courseDetails" } },
@@ -85,6 +85,94 @@ export const getAdminAnalytics = async (req, res, next) => {
         totalCompletions,
         completionsByCourse,
       })
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resourceModels = {
+  revisions: Revision,
+  interviews: InterviewQuestion,
+  "git-commands": GitCommand,
+  pdfs: ResourcePdf,
+  videos: YoutubeVideo,
+};
+
+const getResourceModel = (resource) => {
+  return resourceModels[resource];
+};
+
+export const createModuleResource = async (req, res, next) => {
+  try {
+    const Model = getResourceModel(req.params.resource);
+
+    if (!Model) {
+      return res.status(404).json(
+        new ApiResponse(404, "Resource type not found")
+      );
+    }
+
+    const item = await Model.create(req.body);
+
+    return res.status(201).json(
+      new ApiResponse(201, "Resource created successfully", item)
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateModuleResource = async (req, res, next) => {
+  try {
+    const Model = getResourceModel(req.params.resource);
+
+    if (!Model) {
+      return res.status(404).json(
+        new ApiResponse(404, "Resource type not found")
+      );
+    }
+
+    const item = await Model.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!item) {
+      return res.status(404).json(
+        new ApiResponse(404, "Resource not found")
+      );
+    }
+
+    return res.status(200).json(
+      new ApiResponse(200, "Resource updated successfully", item)
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteModuleResource = async (req, res, next) => {
+  try {
+    const Model = getResourceModel(req.params.resource);
+
+    if (!Model) {
+      return res.status(404).json(
+        new ApiResponse(404, "Resource type not found")
+      );
+    }
+
+    const item = await Model.findByIdAndDelete(req.params.id);
+
+    if (!item) {
+      return res.status(404).json(
+        new ApiResponse(404, "Resource not found")
+      );
+    }
+
+    return res.status(200).json(
+      new ApiResponse(200, "Resource deleted successfully", item)
     );
   } catch (error) {
     next(error);

@@ -89,7 +89,7 @@ export default function ResumeModule() {
         <div className="bg-[#18181b]/35 border border-zinc-800 rounded-2xl p-5 flex items-center space-x-5 min-w-[240px]">
           <div className="flex-1">
             <span className="text-xs text-zinc-500 font-semibold block">Resume Strength</span>
-            <div className="w-full bg-zinc-950 h-2.5 rounded-full mt-2.5 overflow-hidden border border-zinc-850">
+            <div className="w-full bg-zinc-950 h-2.5 rounded-full mt-2.5 overflow-hidden border border-zinc-800">
               <div
                 className="bg-indigo-500 h-full rounded-full transition-all duration-300"
                 style={{ width: `${percentage}%` }}
@@ -124,7 +124,7 @@ export default function ResumeModule() {
                   className={`w-5.5 h-5.5 rounded-md border flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${
                     isChecked
                       ? "bg-indigo-600 border-indigo-500 text-white"
-                      : "border-zinc-850 hover:border-zinc-700"
+                      : "border-zinc-800 hover:border-zinc-700"
                   }`}
                 >
                   {isChecked && <Check size={12} />}
@@ -143,7 +143,7 @@ export default function ResumeModule() {
 
         {/* Tips box side pane */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-[#18181b]/30 border border-zinc-850 p-6 rounded-2xl relative overflow-hidden space-y-4">
+          <div className="bg-[#18181b]/30 border border-zinc-800 p-6 rounded-2xl relative overflow-hidden space-y-4">
             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
 
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -152,7 +152,10 @@ export default function ResumeModule() {
             </h3>
 
             <div className="space-y-3.5 text-xs text-zinc-400">
-              <p>Structure your projects points using the **X-Y-Z formula**:</p>
+              <p>
+                Structure your project points using the{" "}
+                <span className="font-semibold text-zinc-300">X-Y-Z formula</span>:
+              </p>
               <div className="bg-black/35 p-3.5 border border-zinc-900 rounded-xl font-mono text-zinc-300 leading-relaxed">
                 Accomplished <span className="text-emerald-400">[X]</span> as measured by <span className="text-amber-400">[Y]</span>, by doing <span className="text-indigo-400">[Z]</span>.
               </div>
