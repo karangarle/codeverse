@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { api } from "@/shared/api/api";
-import { CheckCircle2, Circle, BookOpen, Clock, ChevronRight } from "lucide-react";
+import { CheckCircle2, Circle, BookOpen, Clock, ChevronRight, Copy, Check, Terminal } from "lucide-react";
 import toast from "react-hot-toast";
+import TopicVisualizer from "./visualizers";
 
 interface Course {
   _id: string;
@@ -15,8 +16,12 @@ interface Course {
 interface Topic {
   _id: string;
   title: string;
+  slug: string;
   shortDescription: string;
   content: string;
+  codeSnippet?: string;
+  codeLanguage?: string;
+  visualizeUrl?: string;
   videoUrl?: string;
   estimatedMinutes?: number;
   course: {
@@ -47,6 +52,14 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
   const [progress, setProgress] = useState<ProgressData | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    toast.success("Code copied to clipboard!");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   // Fetch courses and topics
   useEffect(() => {
@@ -299,6 +312,59 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
                 <div className="prose prose-invert max-w-none text-zinc-300 text-sm md:text-base leading-relaxed whitespace-pre-line border-t border-zinc-800/60 pt-6">
                   {selectedTopic.content}
                 </div>
+
+                {/* Concept Diagram / Image */}
+                {selectedTopic.visualizeUrl && (
+                  <div className="space-y-2 border-t border-zinc-800/60 pt-6">
+                    <span className="text-xs font-semibold text-zinc-400">Concept Diagram</span>
+                    <div className="border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-950/20 p-4 flex justify-center">
+                      <img
+                        src={selectedTopic.visualizeUrl}
+                        alt={`${selectedTopic.title} diagram`}
+                        className="max-h-[320px] object-contain rounded-xl hover:scale-[1.01] transition-all duration-300 shadow-md"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Interactive Visual Simulator */}
+                <TopicVisualizer slug={selectedTopic.slug} />
+
+                {/* Code Snippet Demonstration */}
+                {selectedTopic.codeSnippet && (
+                  <div className="space-y-2 border-t border-zinc-800/60 pt-6">
+                    <div className="flex justify-between items-center px-1">
+                      <span className="text-xs font-semibold text-zinc-400 flex items-center gap-1.5">
+                        <Terminal size={14} className="text-indigo-400" />
+                        Code Demonstration
+                      </span>
+                      <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-zinc-800/80 text-zinc-400 border border-zinc-700/10">
+                        {selectedTopic.codeLanguage || "javascript"}
+                      </span>
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-800 bg-zinc-950 overflow-hidden shadow-xl font-mono text-xs relative group">
+                      {/* Terminal window decoration */}
+                      <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800/50">
+                        <div className="flex gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+                        </div>
+                        <button
+                          onClick={() => handleCopyCode(selectedTopic.codeSnippet || "")}
+                          className="p-1.5 rounded-md hover:bg-zinc-850 text-zinc-400 hover:text-white transition-colors cursor-pointer border border-transparent hover:border-zinc-800"
+                          title="Copy Code"
+                        >
+                          {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                        </button>
+                      </div>
+                      <pre className="p-4 overflow-x-auto text-left leading-relaxed text-indigo-200/90 bg-zinc-950/40 max-h-[300px]">
+                        <code>{selectedTopic.codeSnippet}</code>
+                      </pre>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex justify-between items-center pt-4 border-t border-zinc-800/40">
                   <div className="flex items-center space-x-2 text-xs text-zinc-500">

@@ -7,7 +7,18 @@ const youtubeVideoSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    channelName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     videoId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    // Subject category e.g. "Java", "DSA", "Python", "DBMS", "OS"
+    subject: {
       type: String,
       required: true,
       trim: true,
@@ -15,6 +26,11 @@ const youtubeVideoSchema = new mongoose.Schema(
     playlistName: {
       type: String,
       required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      default: "",
       trim: true,
     },
     order: {
