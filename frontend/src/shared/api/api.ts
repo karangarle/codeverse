@@ -8,6 +8,7 @@ export const api = axios.create({
   },
 });
 
+// Attach JWT token to every request
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
   if (token) {
@@ -15,3 +16,17 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Auto-logout on 401 (expired/invalid token)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear stale auth state
+      useAuthStore.getState().logout();
+      // Redirect to login page
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
