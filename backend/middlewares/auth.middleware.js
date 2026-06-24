@@ -40,6 +40,20 @@ const authMiddleware = async (
 
     next();
   } catch (error) {
+    // Handle JWT-specific errors as 401, not 500
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError" ||
+      error.name === "NotBeforeError"
+    ) {
+      return res.status(401).json({
+        success: false,
+        message:
+          error.name === "TokenExpiredError"
+            ? "Token expired. Please login again."
+            : "Invalid token. Please login again.",
+      });
+    }
     next(error);
   }
 };
