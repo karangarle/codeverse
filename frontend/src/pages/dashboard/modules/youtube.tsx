@@ -222,7 +222,7 @@ export default function YoutubeModule({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Subject Categories Sidebar */}
-        <div className="lg:col-span-3 bg-zinc-950/20 border border-zinc-850 rounded-2xl p-4 space-y-2 max-h-[640px] overflow-y-auto">
+        <div className="lg:col-span-3 bg-zinc-950/20 border border-zinc-850 rounded-2xl p-4 space-y-2 max-h-[640px] overflow-y-auto custom-scrollbar">
           <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-3 mb-3">
             Subjects Index
           </h3>
@@ -332,7 +332,7 @@ export default function YoutubeModule({
                 Playlist Curriculum
               </span>
 
-              <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
                 {activePlaylist ? (
                   activePlaylist.videos.map((video) => {
                     const isActive = activeVideo?._id === video._id;

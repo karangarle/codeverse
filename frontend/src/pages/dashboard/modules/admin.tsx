@@ -76,7 +76,9 @@ const getString = (value: unknown) => {
 };
 
 const getNumberString = (value: unknown) => {
-  return typeof value === "number" ? String(value) : "";
+  if (typeof value === "number") return String(value);
+  if (value === undefined || value === null) return "0";
+  return "";
 };
 
 const getCourseId = (value: unknown) => {
@@ -115,7 +117,7 @@ export default function AdminModule() {
         title: "Courses",
         listEndpoint: "/courses/admin/all",
         adminEndpoint: "/courses",
-        summaryFields: ["slug", "level", "language"],
+        summaryFields: ["slug", "level", "language", "order"],
         fields: [
           { name: "title", label: "Title", type: "text" },
           { name: "slug", label: "Slug", type: "text" },
@@ -141,6 +143,7 @@ export default function AdminModule() {
               { label: "Advanced", value: "advanced" },
             ],
           },
+          { name: "order", label: "Sort Order", type: "number" },
           { name: "duration", label: "Duration Minutes", type: "number" },
           { name: "isPublished", label: "Published", type: "checkbox" },
         ],
@@ -451,6 +454,10 @@ export default function AdminModule() {
 
     if (fieldName === "course") {
       return getCourseTitle(value);
+    }
+
+    if (fieldName === "order" && (value === undefined || value === null)) {
+      return "0";
     }
 
     if (typeof value === "boolean") {

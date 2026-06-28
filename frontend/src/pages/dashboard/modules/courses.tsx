@@ -11,6 +11,7 @@ interface Course {
   description: string;
   level: string;
   duration: number;
+  order?: number;
 }
 
 interface Topic {
@@ -45,6 +46,33 @@ interface CoursesModuleProps {
   searchTarget?: SearchTarget | null;
 }
 
+const getYouTubeEmbedUrl = (url: string) => {
+  if (!url) return "";
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.hostname.includes("youtube.com") && urlObj.pathname === "/watch") {
+      const videoId = urlObj.searchParams.get("v");
+      const playlistId = urlObj.searchParams.get("list");
+      if (videoId) {
+        let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        if (playlistId) embedUrl += `?list=${playlistId}`;
+        return embedUrl;
+      }
+    } else if (urlObj.hostname.includes("youtu.be")) {
+      const videoId = urlObj.pathname.slice(1);
+      const playlistId = urlObj.searchParams.get("list");
+      if (videoId) {
+         let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+         if (playlistId) embedUrl += `?list=${playlistId}`;
+         return embedUrl;
+      }
+    }
+    return url;
+  } catch (e) {
+    return url;
+  }
+};
+
 export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -70,7 +98,16 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
           api.get("/courses"),
           api.get("/course-topics")
         ]);
-        setCourses(cRes.data.data || []);
+        const fetchedCourses = cRes.data.data || [];
+        
+        // Sort courses based on the dynamic 'order' property from the backend
+        const sortedCourses = [...fetchedCourses].sort((a: Course, b: Course) => {
+          const orderA = typeof a.order === 'number' ? a.order : 0;
+          const orderB = typeof b.order === 'number' ? b.order : 0;
+          return orderA - orderB;
+        });
+
+        setCourses(sortedCourses);
         setTopics(tRes.data.data || []);
       } catch (err) {
         toast.error("Failed to load course details.");
@@ -299,7 +336,7 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
                     <iframe
                       width="100%"
                       height="100%"
-                      src={selectedTopic.videoUrl}
+                      src={getYouTubeEmbedUrl(selectedTopic.videoUrl)}
                       title={selectedTopic.title}
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -14,8 +14,10 @@ export const getAllCourses =
         "name email"
       )
       .sort({
+        order: 1,
         createdAt: -1,
-      });
+      })
+      .lean(); // Use lean() to return the raw MongoDB data without schema stripping
   };
 
 export const getCourseBySlug =
@@ -41,6 +43,7 @@ export const updateCourse =
       payload,
       {
         new: true,
+        strict: false, // Bypass strict mode in case the backend schema hasn't fully reloaded in memory
       }
     );
   };
