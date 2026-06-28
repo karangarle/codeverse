@@ -60,6 +60,10 @@ export const updateCourseValidation = [
     .optional()
     .isNumeric()
     .withMessage("Duration must be a number"),
+  body("order")
+    .optional()
+    .isNumeric()
+    .withMessage("Order must be a number"),
   body("isPublished")
     .optional()
     .isBoolean()

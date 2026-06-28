@@ -128,3 +128,30 @@
     @apply font-sans;
     }
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: oklch(0.269 0 0); /* zinc-800 equivalent or just a nice dark grey */
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: oklch(0.371 0 0);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: oklch(0.269 0 0);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: oklch(0.439 0 0);
+}

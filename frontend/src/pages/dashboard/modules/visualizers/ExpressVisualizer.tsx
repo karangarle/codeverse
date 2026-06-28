@@ -106,59 +106,59 @@ export default function ExpressVisualizer() {
       </div>
 
       {/* Pipeline Diagram */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-center">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3 text-center">
         {/* Step 1: Client Request */}
-        <div className={`p-4 rounded-xl border transition-all duration-300 ${
+        <div className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-center min-w-0 ${
           activeStep === 1 ? "bg-indigo-500/10 border-indigo-500 text-white" : "bg-zinc-950/40 border-zinc-850 text-zinc-500"
         }`}>
-          <div className="text-lg font-bold">Client</div>
-          <span className="text-[9px] uppercase tracking-wider block mt-1">1. Dispatch Request</span>
+          <div className="text-base font-bold truncate">Client</div>
+          <span className="text-[9px] uppercase tracking-wider block mt-1 truncate">1. Dispatch</span>
           <div className="mt-2 text-[10px] text-zinc-400 leading-normal">
-            Request initialized. Headers & body packed.
+            Request initialized.
           </div>
         </div>
 
         {/* Step 2: Route Matcher */}
-        <div className={`p-4 rounded-xl border transition-all duration-300 ${
+        <div className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-center min-w-0 ${
           activeStep === 2 ? "bg-indigo-500/10 border-indigo-500 text-white" : "bg-zinc-950/40 border-zinc-850 text-zinc-500"
         }`}>
-          <div className="text-lg font-bold">Router</div>
-          <span className="text-[9px] uppercase tracking-wider block mt-1">2. Endpoint Match</span>
+          <div className="text-base font-bold truncate">Router</div>
+          <span className="text-[9px] uppercase tracking-wider block mt-1 truncate">2. Match</span>
           <div className="mt-2 text-[10px] text-zinc-400 leading-normal">
-            Express matches verb & path patterns.
+            Express matches path.
           </div>
         </div>
 
         {/* Step 3: Middlewares */}
-        <div className={`p-4 rounded-xl border transition-all duration-300 ${
+        <div className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-center min-w-0 ${
           activeStep === 3 ? "bg-indigo-500/10 border-indigo-500 text-white" : "bg-zinc-950/40 border-zinc-850 text-zinc-500"
         }`}>
-          <div className="text-lg font-bold">Middleware</div>
-          <span className="text-[9px] uppercase tracking-wider block mt-1">3. Cors & Body Parser</span>
+          <div className="text-base font-bold truncate">Middleware</div>
+          <span className="text-[9px] uppercase tracking-wider block mt-1 truncate">3. Parse & Cors</span>
           <div className="mt-2 text-[10px] text-zinc-400 leading-normal">
-            Parses parameters, validates authentication tokens.
+            Validates tokens & params.
           </div>
         </div>
 
         {/* Step 4: Controller */}
-        <div className={`p-4 rounded-xl border transition-all duration-300 ${
+        <div className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-center min-w-0 ${
           activeStep === 4 ? "bg-indigo-500/10 border-indigo-500 text-white" : "bg-zinc-950/40 border-zinc-850 text-zinc-500"
         }`}>
-          <div className="text-lg font-bold">Controller</div>
-          <span className="text-[9px] uppercase tracking-wider block mt-1">4. Route Handler</span>
+          <div className="text-base font-bold truncate">Controller</div>
+          <span className="text-[9px] uppercase tracking-wider block mt-1 truncate">4. Handler</span>
           <div className="mt-2 text-[10px] text-zinc-400 leading-normal">
-            Querying DB / altering state of users array.
+            Querying DB / state.
           </div>
         </div>
 
         {/* Step 5: Response */}
-        <div className={`p-4 rounded-xl border transition-all duration-300 ${
+        <div className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-center min-w-0 ${
           activeStep === 5 ? "bg-emerald-500/10 border-emerald-500 text-white" : "bg-zinc-950/40 border-zinc-850 text-zinc-500"
         }`}>
-          <div className="text-lg font-bold">Response</div>
-          <span className="text-[9px] uppercase tracking-wider block mt-1">5. HTTP Response</span>
+          <div className="text-base font-bold truncate">Response</div>
+          <span className="text-[9px] uppercase tracking-wider block mt-1 truncate">5. Send HTTP</span>
           <div className="mt-2 text-[10px] text-zinc-400 leading-normal">
-            Sending back JSON payload + status code.
+            JSON payload + status.
           </div>
         </div>
       </div>
