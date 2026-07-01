@@ -185,5 +185,43 @@ input:invalid { border-color: red; }`,
         },
       ],
     },
+    // ── Responsive Design ────────────────────────────────────────────────
+    {
+      id: "responsive-design",
+      title: "Responsive Design",
+      cards: [
+        {
+          id: "media-queries",
+          title: "Media Queries",
+          lang: "css",
+          code: `/* Desktop-First Approach */
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+}
+
+/* Mobile-First Approach (Recommended) */
+.container { grid-template-columns: 1fr; }
+
+@media (min-width: 768px) {
+  .container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .container { grid-template-columns: repeat(4, 1fr); }
+}`,
+        },
+        {
+          id: "responsive-units",
+          title: "Responsive Units",
+          items: [
+            { key: "rem", desc: "Relative to the root element HTML font size (default: 16px)" },
+            { key: "em", desc: "Relative to the font size of the parent element" },
+            { key: "vw", desc: "Relative to 1% of the width of the viewport" },
+            { key: "vh", desc: "Relative to 1% of the height of the viewport" },
+            { key: "%", desc: "Relative to the immediate parent element size" },
+          ],
+        },
+      ],
+    },
   ],
 };

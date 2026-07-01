@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { api } from "@/shared/api/api";
-import { Search, ChevronDown, ChevronUp, HelpCircle, Sparkles } from "lucide-react";
-import toast from "react-hot-toast";
+import { staticInterviewQuestions } from "@/shared/data/staticData";
+import { Search, ChevronDown, ChevronUp, HelpCircle, Sparkles, Copy, Check } from "lucide-react";
 
 interface InterviewQuestion {
   _id: string;
@@ -10,6 +9,63 @@ interface InterviewQuestion {
   difficulty: "easy" | "medium" | "hard";
   category: string;
 }
+
+const CodeBlock = ({ code, lang }: { code: string; lang: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(code.trim());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="my-5 rounded-xl overflow-hidden border border-zinc-800 bg-[#0d0d0f] shadow-lg">
+      <div className="flex items-center justify-between px-4 py-2 bg-[#18181b] border-b border-zinc-800/80">
+        <span className="text-xs text-zinc-500 font-mono lowercase">{lang || 'text'}</span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer"
+        >
+          {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+          <span className={copied ? "text-emerald-400 font-medium" : ""}>{copied ? 'Copied!' : 'Copy code'}</span>
+        </button>
+      </div>
+      <div className="p-4 overflow-x-auto custom-scrollbar">
+        <pre className="text-[13px] font-mono text-zinc-300 leading-relaxed">
+          <code>{code.trim()}</code>
+        </pre>
+      </div>
+    </div>
+  );
+};
+
+const MarkdownText = ({ content }: { content: string }) => {
+  const parts = content.split(/```(\w+)?\n([\s\S]*?)```/g);
+  
+  return (
+    <div className="whitespace-pre-wrap text-zinc-300 text-sm md:text-base leading-relaxed">
+      {parts.map((part, index) => {
+        if (index % 3 === 0) {
+          const boldParts = part.split(/\*\*(.*?)\*\*/g);
+          return (
+            <span key={index}>
+              {boldParts.map((bp, i) => 
+                i % 2 === 1 ? <strong key={i} className="text-indigo-100 font-bold bg-indigo-500/10 px-1 py-0.5 rounded">{bp}</strong> : bp
+              )}
+            </span>
+          );
+        } else if (index % 3 === 1) {
+          return null;
+        } else {
+          const lang = parts[index - 1] || 'text';
+          return <CodeBlock key={index} code={part} lang={lang} />;
+        }
+      })}
+    </div>
+  );
+};
 
 interface InterviewsModuleProps {
   initialSearch?: string;
@@ -23,18 +79,9 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get("/modules/interviews");
-        setQuestions(res.data.data || []);
-      } catch (err) {
-        toast.error("Failed to load interview questions.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
+    setLoading(true);
+    setQuestions(staticInterviewQuestions);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -48,16 +95,60 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
     setExpandedId(expandedId === id ? null : id);
   };
 
-  const categories = ["All", ...new Set(questions.map((q) => q.category))];
+  const categoryOrder = [
+    "JavaScript",
+    "JavaScript Advanced",
+    "React",
+    "React Advanced",
+    "React Architecture",
+    "React & Next.js",
+    "Node & Express",
+    "Node.js Deep Dive",
+    "MongoDB",
+    "MongoDB Advanced",
+    "SQL & Databases",
+    "MERN Basics",
+    "Security",
+    "System Design & Architecture"
+  ];
 
-  // Filtering
-  const filteredQuestions = questions.filter((q) => {
-    const matchCategory = activeCategory === "All" || q.category === activeCategory;
-    const matchSearch =
-      q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      q.answer.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchCategory && matchSearch;
+  const rawCategories = Array.from(new Set(questions.map((q) => q.category)));
+  rawCategories.sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a);
+    const indexB = categoryOrder.indexOf(b);
+    
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
   });
+
+  const categories = ["All", ...rawCategories];
+
+  // Filtering and Sorting
+  const filteredQuestions = questions
+    .filter((q) => {
+      const matchCategory = activeCategory === "All" || q.category === activeCategory;
+      const matchSearch =
+        q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        q.answer.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchCategory && matchSearch;
+    })
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+      
+      if (indexA !== indexB) {
+        if (indexA === -1 && indexB === -1) return a.category.localeCompare(b.category);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      }
+      
+      const idxA = staticInterviewQuestions.findIndex((q) => q._id === a._id);
+      const idxB = staticInterviewQuestions.findIndex((q) => q._id === b._id);
+      return idxA - idxB;
+    });
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -168,8 +259,8 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
                 <div className="px-5 pb-6 pt-2 border-t border-zinc-800/60 bg-zinc-900/15 animate-slideDown">
                   <div className="flex items-start space-x-3 text-zinc-300 text-sm md:text-base leading-relaxed">
                     <Sparkles size={18} className="text-amber-400/80 mt-1 flex-shrink-0" />
-                    <div className="whitespace-pre-line prose prose-invert max-w-none">
-                      {q.answer}
+                    <div className="prose prose-invert max-w-none w-full">
+                      <MarkdownText content={q.answer} />
                     </div>
                   </div>
                 </div>

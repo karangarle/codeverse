@@ -211,14 +211,73 @@ function Toolbar() {
           id: "error-boundary",
           title: "Error Boundary",
           lang: "jsx",
-          code: `// Lazy loading with Suspense
-const LazyComp = lazy(() => import('./Comp'));
+          code: `import React from 'react';
+          
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Logged Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+
+// Usage:
+// <ErrorBoundary><MyWidget /></ErrorBoundary>`,
+        },
+        {
+          id: "lazy-loading",
+          title: "Lazy Loading & Suspense",
+          lang: "jsx",
+          code: `import { lazy, Suspense } from 'react';
+          
+// Lazy load component
+const LazyWidget = lazy(() => import('./Widget'));
 
 function App() {
   return (
-    <Suspense fallback={<Spinner />}>
-      <LazyComp />
+    <Suspense fallback={<div>Loading component...</div>}>
+      <LazyWidget />
     </Suspense>
+  );
+}`,
+        },
+        {
+          id: "performance-optimization",
+          title: "Performance (React.memo)",
+          lang: "jsx",
+          code: `import React, { useState, useCallback } from 'react';
+
+// Memoized child component
+const ListRow = React.memo(({ item, onClick }) => {
+  console.log('Row rendered:', item.id);
+  return <div onClick={() => onClick(item.id)}>{item.name}</div>;
+});
+
+function ParentList({ items }) {
+  const [active, setActive] = useState(null);
+
+  // useCallback prevents re-creating the function on parent state update
+  const handleSelect = useCallback((id) => {
+    setActive(id);
+  }, []);
+
+  return (
+    <div>
+      {items.map(item => (
+        <ListRow key={item.id} item={item} onClick={handleSelect} />
+      ))}
+    </div>
   );
 }`,
         },

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { api } from "@/shared/api/api";
+import { staticRevisions } from "@/shared/data/staticData";
 import {
   BookOpen,
   Sparkles,
@@ -9,7 +9,6 @@ import {
   Hash,
   ChevronRight,
 } from "lucide-react";
-import toast from "react-hot-toast";
 import { CHEATSHEETS, type CheatCard, type CheatsheetData } from "@/entities/cheatsheet";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -616,17 +615,9 @@ export default function RevisionsModule({ initialSearch }: RevisionsModuleProps)
   const [selected, setSelected] = useState<Revision | null>(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await api.get("/modules/revisions");
-        setRevisions(res.data.data || []);
-      } catch {
-        toast.error("Failed to load revision cards.");
-      } finally {
-        setLoading(false);
-      }
-    })();
+    setLoading(true);
+    setRevisions(staticRevisions);
+    setLoading(false);
   }, []);
 
   if (loading) {
