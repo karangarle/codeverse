@@ -232,6 +232,27 @@ const arr1 = [1, 2, 3];
 const arr2 = [...arr1, 4, 5];
 // [1, 2, 3, 4, 5]`,
         },
+        {
+          id: "regular-vs-arrow",
+          title: "Regular vs Arrow Functions",
+          lang: "js",
+          code: `// 1. 'this' Binding:
+// Regular functions dynamically bind 'this' based on how they are called.
+// Arrow functions lexically bind 'this' (inherit it from surrounding scope).
+
+// 2. Constructors (using 'new'):
+// Regular functions can be constructor functions.
+function Person(name) { this.name = name; }
+const p = new Person('Alice'); // Works!
+
+// Arrow functions cannot be used with 'new'.
+const Animal = (name) => { this.name = name; };
+// new Animal('Dog'); // TypeError: Animal is not a constructor
+
+// 3. 'arguments' Object:
+// Regular functions have access to 'arguments' array-like object.
+// Arrow functions do not (use ...args rest parameter instead).`,
+        },
       ],
     },
 
@@ -307,6 +328,36 @@ const obj = { x: 1, y: 2 };
 for (const key in obj) {
   console.log(key, obj[key]);
 }`,
+        },
+        {
+          id: "remove-duplicates",
+          title: "Remove Array Duplicates",
+          lang: "js",
+          code: `const arr = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple'];
+
+// 1. Using Set (ES6 - Recommended)
+const unique1 = [...new Set(arr)];
+
+// 2. Using filter & indexOf
+const unique2 = arr.filter((item, idx) => arr.indexOf(item) === idx);
+
+// 3. Manual approach without built-in functions
+function removeDuplicates(input) {
+  const unique = [];
+  for (let i = 0; i < input.length; i++) {
+    let exists = false;
+    for (let j = 0; j < unique.length; j++) {
+      if (input[i] === unique[j]) {
+        exists = true;
+        break;
+      }
+    }
+    if (!exists) unique.push(input[i]);
+  }
+  return unique;
+}
+console.log(removeDuplicates(arr));
+// -> ['apple', 'banana', 'orange']`,
         },
       ],
     },
@@ -425,6 +476,84 @@ const fastest = await Promise.race([p1, p2]);
 
 // First to resolve (ignores rejections)
 const first = await Promise.any([p1, p2]);`,
+        },
+      ],
+    },
+    // ── Advanced JS ──────────────────────────────────────────────────────
+    {
+      id: "advanced-js",
+      title: "Advanced Concepts",
+      cards: [
+        {
+          id: "closures-scope",
+          title: "Closures & Scope",
+          lang: "js",
+          code: `// Encapsulation / Private variables
+function createCounter() {
+  let count = 0; // Private state
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    getCount: () => count
+  };
+}
+const counter = createCounter();
+counter.increment(); // 1
+console.log(counter.getCount()); // 1`,
+        },
+        {
+          id: "event-loop-flow",
+          title: "Event Loop & Queues",
+          lang: "js",
+          code: `console.log('1. Call Stack');
+
+setTimeout(() => console.log('4. Macrotask Queue'), 0);
+
+Promise.resolve().then(() => console.log('3. Microtask Queue'));
+
+process.nextTick(() => console.log('2. process.nextTick'));
+
+// Order: Call Stack -> nextTick -> Microtask -> Macrotask`,
+        },
+        {
+          id: "debounce-throttle",
+          title: "Debounce & Throttle",
+          lang: "js",
+          code: `// Debounce: delay until pause
+const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
+// Throttle: execute at most once per window
+const throttle = (fn, limit) => {
+  let inThrottle = false;
+  return (...args) => {
+    if (!inThrottle) {
+      fn(...args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};`,
+        },
+        {
+          id: "shallow-deep-copy",
+          title: "Shallow vs Deep Copy",
+          lang: "js",
+          code: `const original = { a: 1, b: { c: 2 } };
+
+// Shallow copy (spread)
+const shallow = { ...original };
+shallow.b.c = 99; // Mutates original!
+
+// Deep copy (structuredClone)
+const originalClean = { a: 1, b: { c: 2 } };
+const deep = structuredClone(originalClean);
+deep.b.c = 99; // originalClean remains safe`,
         },
       ],
     },

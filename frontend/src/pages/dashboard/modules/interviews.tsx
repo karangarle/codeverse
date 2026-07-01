@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { api } from "@/shared/api/api";
+import { staticInterviewQuestions } from "@/shared/data/staticData";
 import { Search, ChevronDown, ChevronUp, HelpCircle, Sparkles, Copy, Check } from "lucide-react";
-import toast from "react-hot-toast";
 
 interface InterviewQuestion {
   _id: string;
@@ -80,18 +79,9 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get("/modules/interviews");
-        setQuestions(res.data.data || []);
-      } catch (err) {
-        toast.error("Failed to load interview questions.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
+    setLoading(true);
+    setQuestions(staticInterviewQuestions);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -107,13 +97,16 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
 
   const categoryOrder = [
     "JavaScript",
+    "JavaScript Advanced",
     "React",
     "React Advanced",
     "React Architecture",
+    "React & Next.js",
     "Node & Express",
     "Node.js Deep Dive",
     "MongoDB",
     "MongoDB Advanced",
+    "SQL & Databases",
     "MERN Basics",
     "Security",
     "System Design & Architecture"
@@ -145,10 +138,16 @@ export default function InterviewsModule({ initialSearch }: InterviewsModuleProp
       const indexA = categoryOrder.indexOf(a.category);
       const indexB = categoryOrder.indexOf(b.category);
       
-      if (indexA === -1 && indexB === -1) return a.category.localeCompare(b.category);
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
+      if (indexA !== indexB) {
+        if (indexA === -1 && indexB === -1) return a.category.localeCompare(b.category);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      }
+      
+      const idxA = staticInterviewQuestions.findIndex((q) => q._id === a._id);
+      const idxB = staticInterviewQuestions.findIndex((q) => q._id === b._id);
+      return idxA - idxB;
     });
 
   const getDifficultyColor = (difficulty: string) => {

@@ -17,9 +17,8 @@ const run = async () => {
       playlistName: "Aptitude by Yash Jain",
       channelName: "Yash Jain",
       videos: [
-        { title: "Number Systems & Basics", id: "sscX432bMZo" },
-        { title: "Percentages & Ratios", id: "sscX432bMZo" },
-        { title: "Time, Speed & Distance", id: "sscX432bMZo" }
+        { title: "Number Systems & Basics", id: "JvJr5LfRr_c" },
+        { title: "Percentages & Ratios", id: "Ks5rQ6UDjbw" }
       ]
     },
     {
@@ -27,19 +26,15 @@ const run = async () => {
       playlistName: "Java by Telusko",
       channelName: "Telusko",
       videos: [
-        { title: "Java Introduction", id: "BM4CHBmSyh4" },
-        { title: "Variables and Data Types", id: "BM4CHBmSyh4" },
-        { title: "Object Oriented Concepts", id: "BM4CHBmSyh4" }
+        { title: "Java Introduction", id: "8cm1x4bySPM" }
       ]
     },
     {
       subject: "Java",
       playlistName: "Java by Durga Software",
-      channelName: "Durga Software",
+      channelName: "Durga Software Solutions",
       videos: [
-        { title: "Language Fundamentals Part 1", id: "812D3z8S2cM" },
-        { title: "Language Fundamentals Part 2", id: "812D3z8S2cM" },
-        { title: "Modifiers in Java", id: "812D3z8S2cM" }
+        { title: "Core Java Tutorial", id: "6nDOdLV8Rws" }
       ]
     },
     {
@@ -47,7 +42,7 @@ const run = async () => {
       playlistName: "Java by Bro Code",
       channelName: "Bro Code",
       videos: [
-        { title: "Java Full Course (12 Hours)", id: "xk4_1vCGxdI" }
+        { title: "Java Full Course (12 Hours)", id: "GdzRzWymT4c" }
       ]
     },
     {
@@ -62,11 +57,9 @@ const run = async () => {
     {
       subject: "DSA",
       playlistName: "DSA by Striver (TakeUForward)",
-      channelName: "TakeUForward",
+      channelName: "TakeUForward (Striver)",
       videos: [
-        { title: "A2Z DSA Introduction", id: "ear7Mte8qA4" },
-        { title: "Patterns & Math", id: "ear7Mte8qA4" },
-        { title: "Arrays & Sorting", id: "ear7Mte8qA4" }
+        { title: "A2Z DSA Introduction", id: "0bHoB32fuj0" }
       ]
     },
     {
@@ -74,9 +67,7 @@ const run = async () => {
       playlistName: "DSA by Learning Algo",
       channelName: "Learning Algo",
       videos: [
-        { title: "DSA Course Overview", id: "812D3z8S2cM" },
-        { title: "Time Complexity Analysis", id: "812D3z8S2cM" },
-        { title: "Space Complexity", id: "812D3z8S2cM" }
+        { title: "Algorithms Explained", id: "oBt53YbR9Kk" }
       ]
     },
     {
@@ -84,9 +75,7 @@ const run = async () => {
       playlistName: "Algorithms by Abdul Bari",
       channelName: "Abdul Bari",
       videos: [
-        { title: "Introduction to Algorithms", id: "0IAPZzGSbME" },
-        { title: "Asymptotic Notations", id: "0IAPZzGSbME" },
-        { title: "Divide and Conquer", id: "0IAPZzGSbME" }
+        { title: "Introduction to Algorithms", id: "0IAPZzGSbME" }
       ]
     },
     {
@@ -94,19 +83,15 @@ const run = async () => {
       playlistName: "DSA by Kunal Kushwaha",
       channelName: "Kunal Kushwaha",
       videos: [
-        { title: "Introduction to Programming", id: "8hly31xKli0" },
-        { title: "Flow of Program", id: "8hly31xKli0" },
-        { title: "First Java Program", id: "8hly31xKli0" }
+        { title: "Data Structures & Algorithms Course", id: "yRpLlJmRo2w" }
       ]
     },
     {
       subject: "DSA",
       playlistName: "DSA by Raghav Sir (PW)",
-      channelName: "Physics Wallah",
+      channelName: "Raghav Sir (PW)",
       videos: [
-        { title: "C++ Basics Refresher", id: "812D3z8S2cM" },
-        { title: "Binary Search Deep Dive", id: "812D3z8S2cM" },
-        { title: "Recursion Masterclass", id: "812D3z8S2cM" }
+        { title: "DSA Masterclass", id: "5_5oE5lgrhw" }
       ]
     },
     {
@@ -114,18 +99,15 @@ const run = async () => {
       playlistName: "DSA Fundamentals by Learning Algo",
       channelName: "Learning Algo",
       videos: [
-        { title: "Data Structures Intro", id: "812D3z8S2cM" },
-        { title: "Memory Allocation", id: "812D3z8S2cM" }
+        { title: "DSA Fundamentals", id: "9rhT3P1MDHk" }
       ]
     },
     {
       subject: "DSA Fundamentals",
       playlistName: "DSA Fundamentals by Jenny Ma'am",
-      channelName: "Jenny's Lectures",
+      channelName: "Jenny's Lectures CS IT",
       videos: [
-        { title: "What is Data Structure?", id: "AT14lCXuMKI" },
-        { title: "Types of Data Structures", id: "AT14lCXuMKI" },
-        { title: "Algorithms and Pseudo code", id: "AT14lCXuMKI" }
+        { title: "Data Structures for Beginners", id: "AT14lCXuMKI" }
       ]
     },
     {
@@ -133,7 +115,7 @@ const run = async () => {
       playlistName: "DSA by DSA Made Easy",
       channelName: "DSA Made Easy",
       videos: [
-        { title: "Concepts overview", id: "812D3z8S2cM" }
+        { title: "Data Structures & Algorithms Made Easy", id: "b1j4-Q6X9PY" }
       ]
     },
     {
@@ -141,9 +123,7 @@ const run = async () => {
       playlistName: "OOPs by Apna College",
       channelName: "Apna College",
       videos: [
-        { title: "Classes & Objects", id: "bSrm9RXwEQI" },
-        { title: "Inheritance & Polymorphism", id: "bSrm9RXwEQI" },
-        { title: "Encapsulation & Abstraction", id: "bSrm9RXwEQI" }
+        { title: "Object Oriented Programming in Java", id: "BSVKUk58K6U" }
       ]
     },
     {
@@ -151,9 +131,7 @@ const run = async () => {
       playlistName: "Python by Apna College",
       channelName: "Apna College",
       videos: [
-        { title: "Python Intro & Setup", id: "vLqTf2b6GZw" },
-        { title: "Variables & Types", id: "vLqTf2b6GZw" },
-        { title: "Loops & Functions", id: "vLqTf2b6GZw" }
+        { title: "Python Tutorial for Beginners", id: "ERCMXc8x7mc" }
       ]
     },
     {
@@ -161,9 +139,7 @@ const run = async () => {
       playlistName: "Python by Corey Schafer",
       channelName: "Corey Schafer",
       videos: [
-        { title: "Install and Setup", id: "YYXdXT2l-Gg" },
-        { title: "Strings & Text", id: "YYXdXT2l-Gg" },
-        { title: "Integers and Floats", id: "YYXdXT2l-Gg" }
+        { title: "Python OOP Tutorials", id: "BJ-VvGyQxuo" }
       ]
     },
     {
@@ -171,7 +147,7 @@ const run = async () => {
       playlistName: "Python by Bro Code",
       channelName: "Bro Code",
       videos: [
-        { title: "Python Full Course (12 Hours)", id: "xk4_1vCGxdI" }
+        { title: "Python Full Course for Beginners", id: "XKHEtdqhLK8" }
       ]
     },
     {
@@ -179,8 +155,7 @@ const run = async () => {
       playlistName: "Python by Telusko",
       channelName: "Telusko",
       videos: [
-        { title: "Python Introduction", id: "QXeEoD0pB3E" },
-        { title: "Python Installation", id: "QXeEoD0pB3E" }
+        { title: "Python for Beginners", id: "QXeEoD0pB3E" }
       ]
     },
     {
@@ -188,39 +163,31 @@ const run = async () => {
       playlistName: "SQL by Apna College",
       channelName: "Apna College",
       videos: [
-        { title: "Databases & Tables", id: "BpHZgL53YkU" },
-        { title: "Select & Where Clauses", id: "BpHZgL53YkU" },
-        { title: "Joins & Subqueries", id: "BpHZgL53YkU" }
+        { title: "SQL Tutorial for Beginners", id: "hlGoQC332VM" }
       ]
     },
     {
       subject: "DBMS",
       playlistName: "DBMS by Code Help",
-      channelName: "Code Help",
+      channelName: "CodeHelp (Love Babbar)",
       videos: [
-        { title: "What is DBMS?", id: "Wjnz-Xh7uL0" },
-        { title: "ER Models", id: "Wjnz-Xh7uL0" },
-        { title: "Normalization", id: "Wjnz-Xh7uL0" }
+        { title: "DBMS Complete Course", id: "kBdlM6hNDAE" }
       ]
     },
     {
-      subject: "OS",
+      subject: "Operating System",
       playlistName: "OS by Code Help",
-      channelName: "Code Help",
+      channelName: "CodeHelp (Love Babbar)",
       videos: [
-        { title: "Introduction to OS", id: "mXjZcX_yFM0" },
-        { title: "Process Management", id: "mXjZcX_yFM0" },
-        { title: "Memory Management", id: "mXjZcX_yFM0" }
+        { title: "Operating System Full Course", id: "rN9_h0jGg0Q" }
       ]
     },
     {
-      subject: "OS",
+      subject: "Operating System",
       playlistName: "OS by Gate Smashers",
       channelName: "Gate Smashers",
       videos: [
-        { title: "Operating System Basics", id: "vBURTt97EkA" },
-        { title: "CPU Scheduling Algorithms", id: "vBURTt97EkA" },
-        { title: "Deadlocks", id: "vBURTt97EkA" }
+        { title: "Operating System Lectures", id: "kU8O3yH_qSI" }
       ]
     },
     {
@@ -228,8 +195,7 @@ const run = async () => {
       playlistName: "System Design by Shivam Tiwari",
       channelName: "Shivam Tiwari",
       videos: [
-        { title: "What is System Design?", id: "bBTPZ9NdSk8" },
-        { title: "Scalability Basics", id: "bBTPZ9NdSk8" }
+        { title: "System Design for Beginners", id: "rExFReLJ4m8" }
       ]
     },
     {
@@ -237,8 +203,7 @@ const run = async () => {
       playlistName: "System Design by Piyush Garg",
       channelName: "Piyush Garg",
       videos: [
-        { title: "System Design Intro", id: "1aMEnb-65Q4" },
-        { title: "Monolith vs Microservices", id: "1aMEnb-65Q4" }
+        { title: "System Design Masterclass", id: "i7twT3x5yv8" }
       ]
     },
     {
@@ -246,8 +211,15 @@ const run = async () => {
       playlistName: "Networks by Kunal Kushwaha",
       channelName: "Kunal Kushwaha",
       videos: [
-        { title: "Networking Crash Course", id: "IPvYjXCsTg8" },
-        { title: "OSI Model Explained", id: "IPvYjXCsTg8" }
+        { title: "Computer Networks Full Course", id: "IPvYjXCsTg8" }
+      ]
+    },
+    {
+      subject: "Computer Networks",
+      playlistName: "Networks by Gate Smashers",
+      channelName: "Gate Smashers",
+      videos: [
+        { title: "Computer Networks Lectures", id: "J8495tF5h6s" }
       ]
     },
     {
@@ -255,9 +227,7 @@ const run = async () => {
       playlistName: "Web Dev by Chai aur Code",
       channelName: "Chai aur Code",
       videos: [
-        { title: "HTML Crash Course", id: "sscX432bMZo" },
-        { title: "CSS Fundamentals", id: "sscX432bMZo" },
-        { title: "JavaScript Basics", id: "sscX432bMZo" }
+        { title: "HTML Crash Course", id: "XmLOwJHFHf0" }
       ]
     },
     {
@@ -265,8 +235,7 @@ const run = async () => {
       playlistName: "Web Dev by freeCodeCamp",
       channelName: "freeCodeCamp",
       videos: [
-        { title: "Frontend Bootcamp", id: "mU6anWqZJcc" },
-        { title: "Backend with Node", id: "mU6anWqZJcc" }
+        { title: "Responsive Web Design", id: "nu_pCVPKzTk" }
       ]
     },
     {
@@ -274,8 +243,7 @@ const run = async () => {
       playlistName: "GATE by Gate Smashers",
       channelName: "Gate Smashers",
       videos: [
-        { title: "TOC Full Course", id: "vBURTt97EkA" },
-        { title: "Compiler Design", id: "vBURTt97EkA" }
+        { title: "GATE CS Complete Revision", id: "kU8O3yH_qSI" }
       ]
     },
     {
@@ -283,8 +251,15 @@ const run = async () => {
       playlistName: "DSA by NPTEL",
       channelName: "NPTEL",
       videos: [
-        { title: "Lecture 1: Intro to DSA", id: "0IAPZzGSbME" },
-        { title: "Lecture 2: Arrays", id: "0IAPZzGSbME" }
+        { title: "DSA by NPTEL Lectures", id: "zWg7U0OEAoE" }
+      ]
+    },
+    {
+      subject: "Java",
+      playlistName: "Java by NPTEL",
+      channelName: "NPTEL",
+      videos: [
+        { title: "Java by NPTEL Lectures", id: "mVNHPpvXY5c" }
       ]
     }
   ];

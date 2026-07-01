@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { api } from "@/shared/api/api";
 import { CheckCircle2, Circle, BookOpen, Clock, ChevronRight, Copy, Check, Terminal } from "lucide-react";
 import toast from "react-hot-toast";
 import TopicVisualizer from "./visualizers";
+import { staticCourses, staticTopics } from "@/shared/data/staticData";
 
 interface Course {
   _id: string;
@@ -25,6 +25,7 @@ interface Topic {
   visualizeUrl?: string;
   videoUrl?: string;
   estimatedMinutes?: number;
+  order?: number;
   course: {
     _id: string;
     title: string;
@@ -89,33 +90,18 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Fetch courses and topics
+  // Load static courses and topics
   useEffect(() => {
-    const init = async () => {
-      try {
-        setLoading(true);
-        const [cRes, tRes] = await Promise.all([
-          api.get("/courses"),
-          api.get("/course-topics")
-        ]);
-        const fetchedCourses = cRes.data.data || [];
-        
-        // Sort courses based on the dynamic 'order' property from the backend
-        const sortedCourses = [...fetchedCourses].sort((a: Course, b: Course) => {
-          const orderA = typeof a.order === 'number' ? a.order : 0;
-          const orderB = typeof b.order === 'number' ? b.order : 0;
-          return orderA - orderB;
-        });
+    setLoading(true);
+    const sortedCourses = [...staticCourses].sort((a: Course, b: Course) => {
+      const orderA = typeof a.order === 'number' ? a.order : 0;
+      const orderB = typeof b.order === 'number' ? b.order : 0;
+      return orderA - orderB;
+    });
 
-        setCourses(sortedCourses);
-        setTopics(tRes.data.data || []);
-      } catch (err) {
-        toast.error("Failed to load course details.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    init();
+    setCourses(sortedCourses);
+    setTopics(staticTopics);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -143,45 +129,57 @@ export default function CoursesModule({ searchTarget }: CoursesModuleProps) {
     }
   }, [courses, loading, searchTarget, topics]);
 
-  // Fetch progress when course changes
+  // Fetch progress locally when course changes
   useEffect(() => {
     if (!selectedCourse) {
       setProgress(null);
       setSelectedTopic(null);
       return;
     }
-    const fetchProgress = async () => {
-      try {
-        const res = await api.get(`/progress/${selectedCourse._id}`);
-        setProgress(res.data.data);
-      } catch (err) {
-        toast.error("Failed to fetch progress details.");
-      }
-    };
-    fetchProgress();
+    
+    const courseTopics = staticTopics.filter(t => t.course && t.course._id === selectedCourse._id);
+    const totalTopics = courseTopics.length;
+    const stored = localStorage.getItem(`progress_${selectedCourse._id}`);
+    const completedTopicIds = stored ? JSON.parse(stored) : [];
+    const progressPercentage = totalTopics > 0 ? Math.round((completedTopicIds.length / totalTopics) * 100) : 0;
+
+    setProgress({
+      completedTopicIds,
+      progressPercentage,
+      totalTopics
+    });
   }, [selectedCourse]);
 
-  const toggleTopic = async (topicId: string) => {
+  const toggleTopic = (topicId: string) => {
     if (!selectedCourse) return;
-    try {
-      const res = await api.post("/progress", {
-        courseId: selectedCourse._id,
-        topicId
-      });
-      setProgress({
-        completedTopicIds: res.data.data.completedTopicIds,
-        progressPercentage: res.data.data.progressPercentage,
-        totalTopics: res.data.data.totalTopics
-      });
-      toast.success(res.data.message);
-    } catch (err) {
-      toast.error("Failed to update progress.");
+    
+    const courseTopics = staticTopics.filter(t => t.course && t.course._id === selectedCourse._id);
+    const totalTopics = courseTopics.length;
+    
+    const stored = localStorage.getItem(`progress_${selectedCourse._id}`);
+    let completedTopicIds = stored ? JSON.parse(stored) : [];
+    
+    if (completedTopicIds.includes(topicId)) {
+      completedTopicIds = completedTopicIds.filter((id: string) => id !== topicId);
+      toast.success("Topic marked as incomplete");
+    } else {
+      completedTopicIds.push(topicId);
+      toast.success("Topic completed! Keep it up! 🎉");
     }
+    
+    localStorage.setItem(`progress_${selectedCourse._id}`, JSON.stringify(completedTopicIds));
+    const progressPercentage = totalTopics > 0 ? Math.round((completedTopicIds.length / totalTopics) * 100) : 0;
+    
+    setProgress({
+      completedTopicIds,
+      progressPercentage,
+      totalTopics
+    });
   };
 
-  const filteredTopics = topics.filter(
-    (t) => t.course && t.course._id === selectedCourse?._id
-  );
+  const filteredTopics = topics
+    .filter((t) => t.course && t.course._id === selectedCourse?._id)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 
   if (loading) {
     return (
