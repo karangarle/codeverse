@@ -101,7 +101,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "// Call stack behavior\nfunction greet() {\n  console.log(\"Hello!\");\n}\n\ngreet();",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=HE7M8gC4p7w&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=sscX432bMZo&t=24268s",
     "estimatedMinutes": 20,
     "order": 1,
     "course": {
@@ -118,7 +118,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "let count = 1;\nif (true) {\n  let count = 2; // Shadowing count\n  console.log(count); // 2\n}\nconsole.log(count); // 1",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=13gLB-OfdHQ&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=sscX432bMZo&t=24268s",
     "estimatedMinutes": 25,
     "order": 2,
     "course": {
@@ -135,7 +135,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "let name1 = \"Alice\";\nlet name2 = name1; // copied by value\n\nlet obj1 = { name: \"Bob\" };\nlet obj2 = obj1; // copied by reference",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=suMvZwjjKgc&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=sscX432bMZo&t=24268s",
     "estimatedMinutes": 20,
     "order": 3,
     "course": {
@@ -152,7 +152,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "const list = [2, 3, 4];\nlist.unshift(1); // [1, 2, 3, 4]\nlist.shift(); // returns 1, list is [2, 3, 4]",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=cQ6A-pQ6Bw0&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=sscX432bMZo&t=24268s",
     "estimatedMinutes": 30,
     "order": 4,
     "course": {
@@ -169,7 +169,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "sayHello(); // Works due to hoisting\n\nfunction sayHello() {\n  console.log(\"Hello!\");\n}",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=Gk743rG4jig&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=sscX432bMZo&t=24268s",
     "estimatedMinutes": 25,
     "order": 5,
     "course": {
@@ -186,7 +186,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "const nums = [1, 2, 3, 4];\nconst sum = nums.reduce((acc, curr) => acc + curr, 0);\nconsole.log(sum); // 10",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=bW__Ksk3FpY&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=_TjtAyMkiTI&t=67s",
     "estimatedMinutes": 35,
     "order": 6,
     "course": {
@@ -203,7 +203,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "const btn = document.querySelector('button');\nbtn.addEventListener('click', () => {\n  document.body.style.backgroundColor = 'red';\n});",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=lT24z80UoGo&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=_TjtAyMkiTI&t=67s",
     "estimatedMinutes": 30,
     "order": 7,
     "course": {
@@ -220,7 +220,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "console.log('Start');\nsetTimeout(() => console.log('Timeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\nconsole.log('End');\n// Start -> End -> Promise -> Timeout",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=Ke90Tje7VS0&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=_TjtAyMkiTI&t=67s",
     "estimatedMinutes": 40,
     "order": 8,
     "course": {
@@ -237,7 +237,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "function counter() {\n  let count = 0;\n  return () => ++count;\n}\nconst add = counter();\nconsole.log(add()); // 1\nconsole.log(add()); // 2",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=F18w1n8dI50&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=_TjtAyMkiTI&t=67s",
     "estimatedMinutes": 25,
     "order": 9,
     "course": {
@@ -254,7 +254,7 @@ export const staticTopics: Topic[] = [
     "codeSnippet": "class User {\n  constructor(name) { this.name = name; }\n  greet() { return `Hi, ${this.name}`; }\n}",
     "codeLanguage": "javascript",
     "visualizeUrl": "",
-    "videoUrl": "https://www.youtube.com/watch?v=y1y_GjV-u48&list=PLu0W_9lII9ahR1blWXxgSlL4y9iQBnLpX",
+    "videoUrl": "https://www.youtube.com/watch?v=_TjtAyMkiTI&t=67s",
     "estimatedMinutes": 35,
     "order": 10,
     "course": {
