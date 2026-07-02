@@ -54,18 +54,32 @@ const getYouTubeEmbedUrl = (url: string) => {
     if (urlObj.hostname.includes("youtube.com") && urlObj.pathname === "/watch") {
       const videoId = urlObj.searchParams.get("v");
       const playlistId = urlObj.searchParams.get("list");
+      const timeParam = urlObj.searchParams.get("t");
       if (videoId) {
         let embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        if (playlistId) embedUrl += `?list=${playlistId}`;
+        const params: string[] = [];
+        if (playlistId) params.push(`list=${playlistId}`);
+        if (timeParam) {
+          const seconds = parseInt(timeParam, 10);
+          if (!isNaN(seconds)) params.push(`start=${seconds}`);
+        }
+        if (params.length > 0) embedUrl += `?${params.join("&")}`;
         return embedUrl;
       }
     } else if (urlObj.hostname.includes("youtu.be")) {
       const videoId = urlObj.pathname.slice(1);
       const playlistId = urlObj.searchParams.get("list");
+      const timeParam = urlObj.searchParams.get("t");
       if (videoId) {
-         let embedUrl = `https://www.youtube.com/embed/${videoId}`;
-         if (playlistId) embedUrl += `?list=${playlistId}`;
-         return embedUrl;
+        let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        const params: string[] = [];
+        if (playlistId) params.push(`list=${playlistId}`);
+        if (timeParam) {
+          const seconds = parseInt(timeParam, 10);
+          if (!isNaN(seconds)) params.push(`start=${seconds}`);
+        }
+        if (params.length > 0) embedUrl += `?${params.join("&")}`;
+        return embedUrl;
       }
     }
     return url;
